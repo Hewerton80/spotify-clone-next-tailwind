@@ -1,0 +1,19 @@
+{
+  "breakpoints": {
+    "sm": 640,
+    "md": 768,
+    "lg": 962,
+    "xl": 1280,
+    "2xl": 1536
+  },
+  "colors": {
+    "codGray": "#121212",
+    "header": "#070707",
+    "woodSmoke": "#181818",
+    "woodSmoke-hover": "#282828",
+    "lightGray": "#b3b3b3"
+  },
+  "fontFamily": {
+    "sans": "Poppins, Arial, sans-serif"
+  }
+}
