@@ -18,9 +18,11 @@ export enum GenreSlugEnum {
 }
 
 export interface IAlbum {
+  artistId?: number
   amgArtistId?: string
   artistName?: string
   collectionName?: string
+  collectionId?: string
   artistViewUrl?: string
   collectionViewUrl?: string
   artworkUrl60?: string

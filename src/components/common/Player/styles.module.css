@@ -1,0 +1,7 @@
+.root {
+  @apply text-white fixed bottom-0 flex w-screen h-[90px] bg-woodSmoke 
+  border-t-1 border-woodSmoke-hover;
+}
+.root > footer {
+  @apply flex items-center justify-center px-4 w-full h-full;
+}

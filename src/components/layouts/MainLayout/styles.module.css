@@ -2,7 +2,8 @@
   @apply flex min-h-screen bg-codGray;
 }
 .root > div {
-  @apply relative flex flex-col flex-1 h-screen w-full overflow-y-auto;
+  @apply relative flex flex-col flex-1 w-full overflow-y-auto;
+  height: calc(100vh - 90px);
 }
 .root > div > main {
   @apply flex px-8;
