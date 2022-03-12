@@ -1,8 +1,6 @@
 import { Duration } from 'luxon'
 import { useRouter } from 'next/router'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import PlayIcon from '../../../components/icons/PlayIcon'
-import StopIcon from '../../../components/icons/StopIcon'
 import ButtonPlay from '../../../components/ui/buttons/ButtonPlay'
 import TracksTable from '../../../components/ui/datadisplay/TracksTable'
 import { PlayerContext } from '../../../contexts/PlayerContext'
@@ -11,8 +9,7 @@ import { IAlbum } from '../../../types/Album'
 import { ITrack } from '../../../types/Track'
 
 function Album() {
-  const { isPlaying, currentTrackIndex, trackList, togglePlay } =
-    useContext(PlayerContext)
+  const { isPlaying, currentTrackIndex, trackList, playList } = useContext(PlayerContext)
   const router = useRouter()
 
   const [album, setAlbum] = useState<IAlbum | undefined>(undefined)
@@ -29,8 +26,9 @@ function Album() {
   }, [])
 
   useEffect(() => {
-    if (!router.query?.id) return
-    getAlbumsById(String(router.query?.id))
+    if (router.query?.id) {
+      getAlbumsById(String(router.query?.id))
+    }
   }, [router, getAlbumsById])
 
   const totalTrackTime = useMemo(() => {
@@ -81,15 +79,14 @@ function Album() {
       </div>
       <div className="flex py-6">
         {/* {console.log(album?.artistId, tracks?.[currentTrackIndex]?.artistId)} */}
-        <ButtonPlay onClick={togglePlay}>
-          {isPlaying &&
-          (album?.collectionId === trackList?.[currentTrackIndex]?.collectionId ||
-            album?.artistId === trackList?.[currentTrackIndex]?.artistId) ? (
-            <StopIcon />
-          ) : (
-            <PlayIcon />
-          )}
-        </ButtonPlay>
+        <ButtonPlay
+          onClick={() => playList(tracks || [], 0)}
+          isPlaying={
+            isPlaying &&
+            (album?.collectionId === trackList?.[currentTrackIndex]?.collectionId ||
+              album?.artistId === trackList?.[currentTrackIndex]?.artistId)
+          }
+        />
       </div>
       <TracksTable tracks={tracks || []} />
     </div>

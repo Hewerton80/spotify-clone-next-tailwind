@@ -31,6 +31,7 @@ type PlayerContextData = {
   playNext: () => void
   playPrevious: () => void
   clearPlayerState: () => void
+  trackIsPlaying: (trackId: number) => boolean
   hasNext: boolean
   hasPrevious: boolean
 }
@@ -81,6 +82,13 @@ export function PlayerProvider({ children }: PlayerContextProviderProps) {
     setIsPlaying(state)
   }, [])
 
+  const trackIsPlaying = useCallback(
+    (trackId: number) => {
+      return isPlaying && trackList?.[currentTrackIndex]?.trackId === trackId
+    },
+    [isPlaying, trackList, currentTrackIndex]
+  )
+
   const hasPrevious = useMemo(() => currentTrackIndex > 0, [currentTrackIndex])
 
   const hasNext = useMemo(
@@ -123,6 +131,7 @@ export function PlayerProvider({ children }: PlayerContextProviderProps) {
         toggleLoop,
         togglePlay,
         toggleShuffle,
+        trackIsPlaying,
       }}
     >
       {children}

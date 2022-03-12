@@ -5,6 +5,7 @@ import { PlayerContext } from '../../../../contexts/PlayerContext'
 import { ITrack } from '../../../../types/Track'
 import ClockIncon from '../../../icons/ClockIncon'
 import PlayIcon from '../../../icons/PlayIcon'
+import StopIcon from '../../../icons/StopIcon'
 import styles from './styles.module.css'
 
 interface TracksTableProps {
@@ -13,7 +14,7 @@ interface TracksTableProps {
 }
 
 function TracksTable({ className, tracks }: TracksTableProps) {
-  const { isPlaying, currentTrackIndex, trackList, playList } = useContext(PlayerContext)
+  const { playList, trackIsPlaying } = useContext(PlayerContext)
 
   const [previewSelectdIndex, setPreviewSelectdIndex] = useState<undefined | number>(
     undefined
@@ -24,7 +25,6 @@ function TracksTable({ className, tracks }: TracksTableProps) {
       setPreviewSelectdIndex(trackIndex)
       if (trackIndex === previewSelectdIndex) {
         playList(tracks, trackIndex)
-        // play(tracks[trackIndex])
       }
     },
     [tracks, previewSelectdIndex, playList]
@@ -44,25 +44,23 @@ function TracksTable({ className, tracks }: TracksTableProps) {
       </div>
       <div className={classNames(styles.body, className)}>
         {tracks.map((track, i) => {
-          console.log(
-            tracks?.[currentTrackIndex]?.trackId,
-            track?.trackId,
-            tracks?.[currentTrackIndex]?.trackId === track?.trackId
-          )
           return (
             <div
               key={'track' + i}
               onClick={() => handleClickTrack(i)}
               className={classNames(styles.item, {
                 [styles.item_preview_select]: previewSelectdIndex === i,
-                [styles.item_playing]:
-                  isPlaying && trackList?.[currentTrackIndex]?.trackId === track?.trackId,
+                [styles.item_playing]: trackIsPlaying(Number(track?.trackId)),
               })}
             >
               <div className={styles.item_left}>
                 <span className={styles.item_left_index}>{i + 1}</span>
                 <span className={styles.item_left_play_icons}>
-                  <PlayIcon size={16} color="#fff" />
+                  {trackIsPlaying(Number(track?.trackId)) ? (
+                    <StopIcon size={16} color="#1db954" />
+                  ) : (
+                    <PlayIcon size={16} color="#fff" />
+                  )}
                 </span>
                 <div className={styles.item_left_description}>
                   <p> {track?.trackName} </p>

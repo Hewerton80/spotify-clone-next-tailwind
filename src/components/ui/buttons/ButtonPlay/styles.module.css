@@ -1,7 +1,23 @@
 .root {
-  @apply flex items-center justify-center h-14 w-14 rounded-full bg-malachite 
-  hover:scale-[1.04] hover:bg-malachite-hover;
+  @apply flex items-center justify-center h-14 w-14 rounded-full  
+  hover:scale-[1.04];
 }
-/* .root:hover {
-  transform: scale(1.04);
-} */
+
+.root svg {
+  @apply h-1/2 w-1/2;
+}
+
+.root.lg {
+  @apply h-14 w-14;
+}
+.root.sm {
+  @apply h-8 w-8;
+}
+
+.root.primary {
+  @apply bg-malachite hover:bg-malachite-hover;
+}
+
+.root.light {
+  @apply bg-white;
+}
