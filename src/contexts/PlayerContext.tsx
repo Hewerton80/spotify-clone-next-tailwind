@@ -34,6 +34,7 @@ type PlayerContextData = {
   trackIsPlaying: (trackId: number) => boolean
   hasNext: boolean
   hasPrevious: boolean
+  trackListIsEmpty: boolean
 }
 
 type PlayerContextProviderProps = {
@@ -112,6 +113,10 @@ export function PlayerProvider({ children }: PlayerContextProviderProps) {
     }
   }, [hasPrevious, currentTrackIndex])
 
+  const trackListIsEmpty = useMemo(() => {
+    return trackList.length === 0
+  }, [trackList])
+
   return (
     <PlayerContext.Provider
       value={{
@@ -122,6 +127,7 @@ export function PlayerProvider({ children }: PlayerContextProviderProps) {
         isShuffling,
         hasNext,
         hasPrevious,
+        trackListIsEmpty,
         play,
         playList,
         playNext,

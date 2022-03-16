@@ -50,6 +50,9 @@
 .item_left_description span {
   @apply text-sm text-lightGray;
 }
+.item_left_description p {
+  @apply line-clamp-1;
+}
 
 .item.item_preview_select .item_left_description span {
   @apply text-white;

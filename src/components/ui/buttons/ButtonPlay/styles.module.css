@@ -1,6 +1,8 @@
 .root {
-  @apply flex items-center justify-center h-14 w-14 rounded-full  
-  hover:scale-[1.04];
+  @apply flex items-center justify-center h-14 w-14 rounded-full;
+}
+.root:not(:disabled):hover {
+  @apply scale-[1.04];
 }
 
 .root svg {

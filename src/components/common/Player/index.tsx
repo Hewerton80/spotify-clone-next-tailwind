@@ -6,6 +6,7 @@ import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { Duration } from 'luxon'
 import ButtonPlay from '../../ui/buttons/ButtonPlay'
+import Image from 'next/image'
 
 interface PlayerProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -14,6 +15,7 @@ function Player({ className, ...rest }: PlayerProps) {
     trackList,
     currentTrackIndex,
     isPlaying,
+    trackListIsEmpty,
     setPlayingState,
     playNext,
     togglePlay,
@@ -38,10 +40,9 @@ function Player({ className, ...rest }: PlayerProps) {
     <div className={classNames(styles.root, className)} {...rest}>
       <footer>
         <div className={styles.footer_left}>
-          {trackList.length > 0 && (
+          {!trackListIsEmpty && (
             <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={trackList?.[currentTrackIndex]?.artworkUrl100 || ''}
                 alt={trackList?.[currentTrackIndex]?.artistName}
                 width={56}
@@ -62,6 +63,7 @@ function Player({ className, ...rest }: PlayerProps) {
           <div className={styles.player_btns}>
             <ButtonPlay
               isPlaying={isPlaying}
+              disabled={trackListIsEmpty}
               size="sm"
               variant="light"
               onClick={togglePlay}

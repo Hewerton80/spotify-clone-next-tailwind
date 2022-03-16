@@ -17,10 +17,9 @@ const nextConfig = {
       },
     ]
   },
-  // images: {
-  //   loader: 'imgix',
-  //   path: '',
-  // },
+  images: {
+    domains: ['is1-ssl.mzstatic.com', 'is2-ssl.mzstatic.com', 'is5-ssl.mzstatic.com'],
+  },
 }
 
 module.exports = nextConfig
