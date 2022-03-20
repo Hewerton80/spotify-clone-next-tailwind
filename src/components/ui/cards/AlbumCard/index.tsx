@@ -19,8 +19,6 @@ function AlbumsCard({ album }: AlbumsCardProps) {
             className="aspect-square w-full object-cover rounded-full"
             src={album?.artworkUrl100 || ''}
             alt={album.collectionName}
-            width={100}
-            height={100}
             loading="lazy"
             layout="fill"
           />

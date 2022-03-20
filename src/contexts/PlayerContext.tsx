@@ -1,20 +1,6 @@
-import {
-  createContext,
-  useState,
-  ReactNode,
-  useContext,
-  useCallback,
-  useMemo,
-} from 'react'
+import { createContext, useState, ReactNode, useCallback, useMemo } from 'react'
+import { IAlbum } from '../types/Album'
 import { ITrack } from '../types/Track'
-
-// type Track = {
-//     title: string,
-//     members: string,
-//     thumbnail: string,
-//     duration: number,
-//     url: string;
-// }
 
 type PlayerContextData = {
   trackList: Array<ITrack>
@@ -32,6 +18,7 @@ type PlayerContextData = {
   playPrevious: () => void
   clearPlayerState: () => void
   trackIsPlaying: (trackId: number) => boolean
+  currentTrackBelongsToAlbum: (album: IAlbum | undefined) => boolean
   hasNext: boolean
   hasPrevious: boolean
   trackListIsEmpty: boolean
@@ -82,6 +69,16 @@ export function PlayerProvider({ children }: PlayerContextProviderProps) {
   const setPlayingState = useCallback((state: boolean) => {
     setIsPlaying(state)
   }, [])
+
+  const currentTrackBelongsToAlbum = useCallback(
+    (album: IAlbum | undefined) => {
+      return (
+        album?.collectionId === trackList?.[currentTrackIndex]?.collectionId ||
+        album?.artistId === trackList?.[currentTrackIndex]?.artistId
+      )
+    },
+    [trackList, currentTrackIndex]
+  )
 
   const trackIsPlaying = useCallback(
     (trackId: number) => {
@@ -138,6 +135,7 @@ export function PlayerProvider({ children }: PlayerContextProviderProps) {
         togglePlay,
         toggleShuffle,
         trackIsPlaying,
+        currentTrackBelongsToAlbum,
       }}
     >
       {children}

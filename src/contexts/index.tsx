@@ -1,14 +1,17 @@
 import { PlayerProvider } from './PlayerContext'
 import { ReactNode } from 'react'
 import { BackGroundProvider } from './BackGroundContext'
+import { HistoryRoutesProvider } from './HistoryRoutes'
 
 interface ProvidersPropos {
   children?: ReactNode
 }
 export default function Providers({ children }: ProvidersPropos) {
   return (
-    <PlayerProvider>
-      <BackGroundProvider>{children}</BackGroundProvider>
-    </PlayerProvider>
+    <HistoryRoutesProvider>
+      <PlayerProvider>
+        <BackGroundProvider>{children}</BackGroundProvider>
+      </PlayerProvider>
+    </HistoryRoutesProvider>
   )
 }

@@ -5,7 +5,7 @@ import { PlayerContext } from '../../../contexts/PlayerContext'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { Duration } from 'luxon'
-import ButtonPlay from '../../ui/buttons/ButtonPlay'
+import PlayButton from '../../ui/buttons/PlayButton'
 import Image from 'next/image'
 
 interface PlayerProps extends HTMLAttributes<HTMLDivElement> {}
@@ -61,7 +61,7 @@ function Player({ className, ...rest }: PlayerProps) {
         </div>
         <div className={styles.footer_center}>
           <div className={styles.player_btns}>
-            <ButtonPlay
+            <PlayButton
               isPlaying={isPlaying}
               disabled={trackListIsEmpty}
               size="sm"

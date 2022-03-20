@@ -2,17 +2,19 @@ import { Duration } from 'luxon'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import ButtonPlay from '../../../components/ui/buttons/ButtonPlay'
+import PlayButton from '../../../components/ui/buttons/PlayButton'
 import TracksTable from '../../../components/ui/datadisplay/TracksTable'
 import { BackGroundContext } from '../../../contexts/BackGroundContext'
 import { PlayerContext } from '../../../contexts/PlayerContext'
 import { api } from '../../../services/nextApi'
 import { IAlbum } from '../../../types/Album'
 import { ITrack } from '../../../types/Track'
+import { getRandomColor } from '../../../utils/getRandomColor'
 // import Vibrant from 'node-vibrant'
 
 function Album() {
-  const { isPlaying, currentTrackIndex, trackList, playList } = useContext(PlayerContext)
+  const { isPlaying, playList, togglePlay, currentTrackBelongsToAlbum } =
+    useContext(PlayerContext)
   const { handleSetBackGroundStyle, handleSetHeaderStyle } = useContext(BackGroundContext)
   const router = useRouter()
 
@@ -36,41 +38,26 @@ function Album() {
   }, [router, getAlbumsById])
 
   useEffect(() => {
-    handleSetHeaderStyle({
-      background: 'transparent',
-    })
-    return () => {
-      handleSetHeaderStyle(undefined)
+    if (album) {
+      const randomColor = getRandomColor()
+      handleSetHeaderStyle({
+        background: `linear-gradient(180deg, ${randomColor} 0%, rgba(253,187,45,0) 100%)`,
+      })
+      handleSetBackGroundStyle({
+        background: `linear-gradient(180deg, ${randomColor} 0%, rgba(253,187,45,0) 100%)`,
+      })
     }
-  }, [handleSetHeaderStyle])
-
-  useEffect(() => {
-    // let colors = '' )
-    // ;(async () => {
-    //   if (album?.artworkUrl100) {
-    //     const palette = await Vibrant.from(album.artworkUrl100).getPalette()
-    //     console.log(palette)
-    //   }
-    // })()
-    handleSetBackGroundStyle({
-      background:
-        'linear-gradient(180deg, rgba(34,193,195,.7) 0%, rgba(253,187,45,0) 100%)',
-    })
 
     return () => {
       handleSetBackGroundStyle(undefined)
+      handleSetHeaderStyle(undefined)
     }
-  }, [handleSetBackGroundStyle, album])
+  }, [handleSetBackGroundStyle, handleSetHeaderStyle, album])
 
   const totalTrackTime = useMemo(() => {
     if (tracks) {
-      const totalTime = tracks
-        .map((t) => t.trackTimeMillis)
-        .reduce((total, trackTimeMillis) => {
-          return Number(total) + Number(trackTimeMillis)
-        })
-      const duration = Duration.fromMillis(Number(totalTime))
-      return `${duration.toFormat('h')}h ${duration.toFormat('mm')}min`
+      const duration = Duration.fromMillis(29 * 1000 * tracks.length)
+      return `${duration.toFormat('h')}h ${duration.toFormat('m')}min`
     }
   }, [tracks])
 
@@ -79,7 +66,6 @@ function Album() {
       <div className="flex flex-col h-full w-full pb-4">
         <div className="flex py-8 min-h-[296px]">
           <div className="w-full max-w-[232px] shadow-lg mr-6 relative">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <Image
               className="aspect-square w-full object-cover"
               src={
@@ -87,9 +73,8 @@ function Album() {
                 'https://is2-ssl.mzstatic.com/image/thumb/Purple126/v4/bc/32/e0/bc32e05c-e17c-b40c-da40-27c03ec94df5/AppIcon-1x_U007emarketing-0-6-0-0-85-220.png/1200x630wa.png'
               }
               alt={album?.artistName}
-              width={232}
-              height={232}
               layout="fill"
+              priority
             />
           </div>
           <div className="flex flex-col text-white justify-end">
@@ -97,16 +82,18 @@ function Album() {
             <span className="font-bold text-5xl">{album?.collectionName}</span>
             <div className="flex items-center mt-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <Image
-                className="w-6 h-6 rounded-full mr-1"
-                src={
-                  album?.artworkUrl60 ||
-                  'https://is2-ssl.mzstatic.com/image/thumb/Purple126/v4/bc/32/e0/bc32e05c-e17c-b40c-da40-27c03ec94df5/AppIcon-1x_U007emarketing-0-6-0-0-85-220.png/1200x630wa.png'
-                }
-                alt={album?.artistName}
-                width={24}
-                height={24}
-              />
+              <span className="mr-1 w-6 h-6">
+                <Image
+                  className="w-6 h-6 rounded-full"
+                  src={
+                    album?.artworkUrl60 ||
+                    'https://is2-ssl.mzstatic.com/image/thumb/Purple126/v4/bc/32/e0/bc32e05c-e17c-b40c-da40-27c03ec94df5/AppIcon-1x_U007emarketing-0-6-0-0-85-220.png/1200x630wa.png'
+                  }
+                  alt={album?.artistName}
+                  width={24}
+                  height={24}
+                />
+              </span>
               <div className="text-sm space-x-1">
                 <span className="font-bold">{album?.artistName}</span>
                 <span>
@@ -119,14 +106,11 @@ function Album() {
           </div>
         </div>
         <div className="flex py-6">
-          {/* {console.log(album?.artistId, tracks?.[currentTrackIndex]?.artistId)} */}
-          <ButtonPlay
-            onClick={() => playList(tracks || [], 0)}
-            isPlaying={
-              isPlaying &&
-              (album?.collectionId === trackList?.[currentTrackIndex]?.collectionId ||
-                album?.artistId === trackList?.[currentTrackIndex]?.artistId)
+          <PlayButton
+            onClick={() =>
+              currentTrackBelongsToAlbum(album) ? togglePlay() : playList(tracks || [], 0)
             }
+            isPlaying={isPlaying && currentTrackBelongsToAlbum(album)}
           />
         </div>
         <TracksTable tracks={tracks || []} />

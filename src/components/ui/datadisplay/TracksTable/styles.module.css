@@ -16,10 +16,10 @@
 .item {
   @apply flex items-center justify-between h-14 px-4 rounded;
 }
-.item.item_preview_select {
+.item.item_preview_selected {
   @apply bg-white/30;
 }
-.item:not(.item_preview_select):hover {
+.item:not(.item_preview_selected):hover {
   @apply bg-dark-muted;
 }
 
@@ -38,10 +38,10 @@
 .item:hover .item_left_play_icons {
   @apply flex;
 }
-.item.item_preview_select .item_left_index {
+.item.item_preview_selected .item_left_index {
   @apply hidden;
 }
-.item.item_preview_select .item_left_play_icons {
+.item.item_preview_selected .item_left_play_icons {
   @apply flex;
 }
 .item_left_description {
@@ -54,7 +54,7 @@
   @apply line-clamp-1;
 }
 
-.item.item_preview_select .item_left_description span {
+.item.item_preview_selected .item_left_description span {
   @apply text-white;
 }
 

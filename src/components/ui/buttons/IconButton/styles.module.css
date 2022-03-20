@@ -1,12 +1,11 @@
 .root {
   @apply flex items-center justify-center h-14 w-14 rounded-full;
 }
+.root:disabled {
+  @apply opacity-70 cursor-not-allowed;
+}
 .root:not(:disabled):hover {
   @apply scale-[1.04];
-}
-
-.root svg {
-  @apply h-1/2 w-1/2;
 }
 
 .root.lg {
@@ -22,4 +21,9 @@
 
 .root.light {
   @apply bg-white;
+}
+
+.root.dark {
+  /* prettier-ignore */
+  background-color: theme('colors.black')b3;
 }

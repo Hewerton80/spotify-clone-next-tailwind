@@ -7,6 +7,7 @@
     "2xl": 1536
   },
   "colors": {
+    "black": "#000000",
     "codGray": "#121212",
     "header": "#070707",
     "woodSmoke": "#181818",

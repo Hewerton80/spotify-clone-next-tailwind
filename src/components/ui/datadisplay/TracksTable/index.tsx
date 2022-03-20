@@ -49,7 +49,7 @@ function TracksTable({ className, tracks }: TracksTableProps) {
               key={'track' + i}
               onClick={() => handleClickTrack(i)}
               className={classNames(styles.item, {
-                [styles.item_preview_select]: previewSelectdIndex === i,
+                [styles.item_preview_selected]: previewSelectdIndex === i,
                 [styles.item_playing]: trackIsPlaying(Number(track?.trackId)),
               })}
             >
@@ -68,9 +68,7 @@ function TracksTable({ className, tracks }: TracksTableProps) {
                 </div>
               </div>
               <div className={styles.item_right}>
-                <span>
-                  {Duration.fromMillis(Number(track.trackTimeMillis)).toFormat('mm:ss')}
-                </span>
+                <span>{Duration.fromMillis(29 * 1000).toFormat('mm:ss')}</span>
               </div>
             </div>
           )
