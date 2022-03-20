@@ -27,3 +27,11 @@
   /* prettier-ignore */
   background-color: theme('colors.black')b3;
 }
+
+.root.transparent {
+  @apply bg-transparent;
+}
+
+.root:not(:disabled).transparent:hover svg {
+  fill: theme('colors.white');
+}

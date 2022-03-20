@@ -5,6 +5,7 @@ import SpotfyLogo from '../../icons/SpotfyLogo'
 import Link from 'next/link'
 import HomeIncon from '../../icons/HomeIcon'
 import { useRouter } from 'next/router'
+import HomeOutlineIncon from '../../icons/HomeOutlineIcon'
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {}
 
@@ -25,7 +26,7 @@ function Sidebar({ children, className, ...rest }: SidebarProps) {
         >
           <Link href="/">
             <a>
-              <HomeIncon />
+              {router.pathname === '/' ? <HomeIncon /> : <HomeOutlineIncon />}
               <span>Início</span>
             </a>
           </Link>

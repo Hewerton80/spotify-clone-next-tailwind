@@ -48,36 +48,20 @@ export function HistoryRoutesProvider({ children }: HistoryRoutesContextProvider
     }
   }, [router, historyRoutes])
 
-  // useEffect(() => {
-  //   console.log('\nhistoryRoutes: ', historyRoutes, '\n')
-  // }, [historyRoutes])
-
-  // useEffect(() => {
-  //   console.log('currentRouteIndex: ', currentRouteIndex)
-  // }, [currentRouteIndex])
-
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       setHistoryRoutes(([...currentHistoryRoutes]) => {
         const foundIndex = currentHistoryRoutes.findIndex(
           (r) => removeQueryParamsFromUrl(r) === removeQueryParamsFromUrl(url)
         )
-        console.log('\n')
-        console.log('url: ', url)
-        // console.log(router.query)
         if (url.includes('?isBack=1')) {
-          console.log('isBack: ', url)
-          console.log('currentHistoryRoutes', currentHistoryRoutes)
           return currentHistoryRoutes
         }
         if (foundIndex >= 0) {
-          // console.log('antes', currentHistoryRoutes)
           currentHistoryRoutes.splice(foundIndex, 1)
           currentHistoryRoutes.push(url)
-          console.log('depois', currentHistoryRoutes)
           return currentHistoryRoutes
         }
-        // console.log('notfound: ', url)
         return [...currentHistoryRoutes, url]
       })
     }

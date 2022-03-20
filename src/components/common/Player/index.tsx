@@ -1,4 +1,12 @@
-import { HTMLAttributes, useContext, useEffect, useRef, useState } from 'react'
+import {
+  HTMLAttributes,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import classNames from 'classnames'
 import styles from './styles.module.css'
 import { PlayerContext } from '../../../contexts/PlayerContext'
@@ -7,6 +15,11 @@ import 'rc-slider/assets/index.css'
 import { Duration } from 'luxon'
 import PlayButton from '../../ui/buttons/PlayButton'
 import Image from 'next/image'
+import IconButton from '../../ui/buttons/IconButton'
+import TrackPrevIcon from '../../icons/TrackPrevIcon'
+import TrackNextIcon from '../../icons/TrackNextIcon'
+import VolumeIcon from '../../icons/VolumeIcon'
+import VolumeMuteIcon from '../../icons/VolumeIconMute'
 
 interface PlayerProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -16,12 +29,16 @@ function Player({ className, ...rest }: PlayerProps) {
     currentTrackIndex,
     isPlaying,
     trackListIsEmpty,
+    hasPrevious,
+    hasNext,
     setPlayingState,
     playNext,
+    playPrevious,
     togglePlay,
   } = useContext(PlayerContext)
 
-  const [progress, setProgress] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [volume, setVolume] = useState(100)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
@@ -35,6 +52,25 @@ function Player({ className, ...rest }: PlayerProps) {
       audioRef.current.pause()
     }
   }, [isPlaying])
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100
+    }
+  }, [volume])
+
+  const isMuted = useMemo(() => volume === 0, [volume])
+
+  const handleChangeMute = useCallback(() => {
+    if (!audioRef.current) {
+      return
+    }
+    if (isMuted) {
+      setVolume(100)
+    } else {
+      setVolume(0)
+    }
+  }, [isMuted])
 
   return (
     <div className={classNames(styles.root, className)} {...rest}>
@@ -61,6 +97,13 @@ function Player({ className, ...rest }: PlayerProps) {
         </div>
         <div className={styles.footer_center}>
           <div className={styles.player_btns}>
+            <IconButton
+              size="sm"
+              variant="transparent"
+              disabled={!hasPrevious}
+              icon={<TrackPrevIcon />}
+              onClick={playPrevious}
+            />
             <PlayButton
               isPlaying={isPlaying}
               disabled={trackListIsEmpty}
@@ -68,20 +111,27 @@ function Player({ className, ...rest }: PlayerProps) {
               variant="light"
               onClick={togglePlay}
             />
+            <IconButton
+              size="sm"
+              variant="transparent"
+              disabled={!hasNext}
+              icon={<TrackNextIcon />}
+              onClick={playNext}
+            />
           </div>
           <div className={styles.player_bar}>
-            <span>{Duration.fromMillis(progress * 1000).toFormat('mm:ss')}</span>
+            <span>{Duration.fromMillis(currentTime * 1000).toFormat('mm:ss')}</span>
             <Slider
               className={styles.slider}
               min={0}
               max={audioRef?.current?.duration || 0}
-              value={progress}
+              value={currentTime}
               range={false}
               // allowCross={false}
               onChange={(currentTime) => {
                 if (audioRef.current) {
                   audioRef.current.currentTime = currentTime as number
-                  setProgress(currentTime as number)
+                  setCurrentTime(currentTime as number)
                 }
               }}
             />
@@ -93,16 +143,35 @@ function Player({ className, ...rest }: PlayerProps) {
           </div>
           <audio
             ref={audioRef}
-            // controls
             src={trackList?.[currentTrackIndex]?.previewUrl}
             autoPlay
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
             onEnded={playNext}
-            onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime)}
+            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
           />
         </div>
-        <div className={styles.footer_right}></div>
+        <div className={styles.footer_right}>
+          <IconButton
+            variant="transparent"
+            size="sm"
+            icon={isMuted ? <VolumeMuteIcon /> : <VolumeIcon />}
+            onClick={handleChangeMute}
+          />
+          <span>
+            <Slider
+              className={styles.slider}
+              min={0}
+              max={100}
+              value={volume}
+              range={false}
+              // allowCross={false}
+              onChange={(volume) => {
+                setVolume(volume as number)
+              }}
+            />
+          </span>
+        </div>
       </footer>
     </div>
   )

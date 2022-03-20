@@ -61,6 +61,10 @@ function Album() {
     }
   }, [tracks])
 
+  if (!(tracks && album)) {
+    return <></>
+  }
+
   return (
     <>
       <div className="flex flex-col h-full w-full pb-4">

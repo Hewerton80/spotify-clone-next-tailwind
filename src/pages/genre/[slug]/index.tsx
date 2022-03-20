@@ -28,6 +28,10 @@ function Genre() {
     getAlbumsByGenre(String(slugKey))
   }, [router, getAlbumsByGenre])
 
+  if (albums.length === 0) {
+    return <></>
+  }
+
   return (
     <div className="flex flex-col h-full w-full mt-4 py-4">
       <h2 className="text-2xl text-white font-bold">Álbuns</h2>

@@ -5,7 +5,7 @@ import styles from './styles.module.css'
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isPlaying?: boolean
   size?: 'sm' | 'lg'
-  variant?: 'primary' | 'light' | 'dark'
+  variant?: 'primary' | 'light' | 'dark' | 'transparent'
   icon?: React.ReactNode
 }
 

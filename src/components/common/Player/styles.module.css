@@ -21,7 +21,7 @@
   @apply flex flex-col justify-center items-center space-y-2;
 }
 .player_btns {
-  @apply flex justify-center w-full;
+  @apply flex justify-center w-full space-x-4;
 }
 .player_bar {
   @apply flex items-center w-full space-x-2;
@@ -30,7 +30,10 @@
   @apply text-[11px] text-[#a7a7a7];
 }
 .footer_right {
-  @apply flex items-center;
+  @apply flex items-center justify-end;
+}
+.footer_right > span {
+  @apply w-24;
 }
 
 /*slider*/
