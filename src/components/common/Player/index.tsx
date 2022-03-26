@@ -62,9 +62,6 @@ function Player({ className, ...rest }: PlayerProps) {
   const isMuted = useMemo(() => volume === 0, [volume])
 
   const handleChangeMute = useCallback(() => {
-    if (!audioRef.current) {
-      return
-    }
     if (isMuted) {
       setVolume(100)
     } else {
