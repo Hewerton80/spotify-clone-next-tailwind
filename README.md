@@ -2,11 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## About 📄
 
-🎵🔊 spotfy clone
+🎵🔊 spotfy clone.  <a href="https://spotify-clone-next-tailwind.vercel.app/" target="_blank" rel="noopener noreferrer">See demo</a> 
 
 <p align="center">
-
-<img src='https://user-images.githubusercontent.com/37268237/164991850-04973204-acfc-44c8-a8b8-85463c7c3657.gif' />
+<img src='https://user-images.githubusercontent.com/37268237/166114575-ccc1b876-e893-460f-9ac5-c8bf4660b8ab.gif' />
 </p>
 
 ## Technologies 💻
